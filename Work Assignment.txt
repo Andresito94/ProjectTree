@@ -1,0 +1,23 @@
+
+
+
+
+
+
+LoginPage.jsx
+CreatePage.jsx
+NotAuthorizedPage.jsx
+GroseriesAppContainer.jsx // Already done, just to modify
+ProductFormPage.jsx
+ProductFormPage.jsx //one is edit other is create
+
+Andrew			=>	 CSS // All files
+Andre 			=>	 GroseriesAppContainer.jsx
+Paras 			=>	 LoginPage.jsx, CreateUser.jsx
+Ali 			=>	 App.jsx
+Yashwant 		=>	 Backend
+Jagjeet 		=>	 PageNotFound.jsx, NotAuthorized.jsx
+Mohit 			=>	 PageNotFound.jsx, NotAuthorized.jsx
+Ben 			=>	 PageNotFound.jsx, NotAuthorized.jsx
+
+
