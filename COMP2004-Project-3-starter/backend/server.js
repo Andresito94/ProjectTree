@@ -158,7 +158,8 @@ server.post("/login", async (request, response) => {
             }
 
             if (result) {
-                return response/*.status(200)*/.send({message: "User authenticated"});
+                return response/*.status(200)*/.send({message: "User authenticated"}, 
+                  jwtToken,);
             } else {
                 return response/*.status(400)*/.send({message: "Incorrect username or password"});
             }

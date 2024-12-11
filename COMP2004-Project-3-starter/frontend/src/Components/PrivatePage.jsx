@@ -1,4 +1,4 @@
-/*import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -26,4 +26,3 @@ export default function PrivatePage() {
     </div>
   );
 }
-*/

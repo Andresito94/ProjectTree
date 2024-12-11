@@ -1,6 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import UserForm from "./UserForm";
+import FormComponent from "./FormComponent";
+import Cookies from "js-cookies";
 import { Link, useNavigate } from "react-router-dom"; //this is for going back to pages
 export default function LoginPage() {
   // States
@@ -16,6 +19,14 @@ export default function LoginPage() {
       return { ...prevData, [e.target.name]: e.target.value };
     });
   };
+  const handleCookie = (jwtToken) => {
+    Cookies.set("jwt-authorization", jwtToken);
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleLogin();
+    setFormData({ username: "", password: "" });
+  };
   const handleLogin = async () => {
     try {
       await axios
@@ -23,18 +34,24 @@ export default function LoginPage() {
           username: formData.username,
           password: formData.password,
         })
-        .then((response) => setPostResponse(response.data));
+        .then((response) => {setPostResponse(response.data.message)
+          if(response.data.message === "User authenticated"){
+            handleCookie(response.data.token);
+            navigate("/private");
+
+          }
+        });
     } catch (error) {
       console.log(error);
     }
-  };
+    };
   const handleOnSubmit = (e) => {
     e.preventDefault();
     handleLogin();
     setFormData({ username: "", password: "" });
-  };
+    };
   // Render
-  return (
+    return (
     <div>
       <h1>Login Page</h1>
       <UserForm
