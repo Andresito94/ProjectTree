@@ -6,7 +6,8 @@ const mongoose = require("mongoose");
 const Product = require("./models/product");
 const User = require("./models/user")
 require("dotenv").config();
-const { DB_URI } = process.env;
+const { DB_URI, JWT_SECRET } = process.env;
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 server.use(cors());
@@ -140,31 +141,33 @@ server.patch("/products/:id", async (request, response) => {
 ///below this is for user part only
 
 //login route
+// Login route
 server.post("/login", async (request, response) => {
-  const { username, password } = request.body;
+    const { username, password } = request.body;
+    const jwtToken = jwt.sign({id: username}, JWT_SECRET)
+    const user = await User.findOne({ username }).then((user) => {
+        // If user is not found in the database return 400 status
+        if (!user) {
+            return response/*.status(400)*/.send("User not found");
+        }
 
-  const user = await User.findOne({ username }).then((user) => {
-    //If user is not found in the database return 400 status
-    if (!user) {
-      return response.status(400).send("Username doesnot exist");
-    }
-    //If user is found in the database compare the password with bcrypt
-    bcrypt.compare(password, user.password, (error, result) => {
-      if (error) {
-        return response.status(400).send("An error occured");
-      }
-      if (result) {
-        return response.status(200).send("User authenticated");
-      } else {
-        return response.status(400).send("Bad username or password");
-      }
+        // If user is found in the database compare the password with bcrypt
+        bcrypt.compare(password, user.password, (error, result) => {
+            if (error) {
+                return response/*.status(400)*/.send({message: "An error occurred"});
+            }
+
+            if (result) {
+                return response/*.status(200)*/.send({message: "User authenticated"});
+            } else {
+                return response/*.status(400)*/.send({message: "Incorrect username or password"});
+            }
+        });
     });
-  });
 });
 
-
 //create-user 
-server.post("/create-user", async(request, response) =>{
+server.post("/create-user", async(request, response) =>{ // Apparently we used create-user instead of register
   const { username, password } = request.body;
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -173,7 +176,7 @@ server.post("/create-user", async(request, response) =>{
     password: hashedPassword
   })
   try{
-    await newUser.save().then((result)=> response.send(`Congrats! username has been added ${username}`));
+    await newUser.save().then((result)=> response.status(200).send(`Congrats! username has been added ${username}`));
 
   }catch(error){
        response.send(`cannot add user: error  ${error.message}`)

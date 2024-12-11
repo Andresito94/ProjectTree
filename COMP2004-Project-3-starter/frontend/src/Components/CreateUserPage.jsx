@@ -16,11 +16,13 @@ export default function CreateUserPage() {
   const handleCreateUser = async () => {
     try {
       axios
-        .post("http://localhost:3000/create-user", {
-          username: formData.username,
-          password: formData.password,
-        })
-        .then((response) => setPostResponse(response.data));
+      .post("http://localhost:3000/create-user", formData)
+    .then((response) => setPostResponse(response.data));
+        //.post("http://localhost:3000/create-user", {
+        //  username: formData.username,
+        //  password: formData.password,
+        //})
+        //.then((response) => setPostResponse(response.data));
     } catch (error) {
       console.log(error);
     }
