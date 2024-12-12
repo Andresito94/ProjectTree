@@ -18,7 +18,7 @@ export default function UserForm({
         <br />
         <input
           type="password"
-          name="password "
+          name="password"
           id="password"
           placeholder="Password"
           value={formData.password}

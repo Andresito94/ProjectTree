@@ -26,7 +26,7 @@ export default function FormComponent({
           type="password"
           id="password"
           name="password"
-          value={formData.password}
+          value="hello"
           onChange={handleOnChange}
         />
         <br />
