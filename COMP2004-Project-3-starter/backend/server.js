@@ -143,29 +143,28 @@ server.patch("/products/:id", async (request, response) => {
 //login route
 // Login route
 server.post("/login", async (request, response) => {
-    const { username, password } = request.body;
-    const jwtToken = jwt.sign({id: username}, JWT_SECRET)
-    const user = await User.findOne({ username }).then((user) => {
-        // If user is not found in the database return 400 status
-        if (!user) {
-            return response/*.status(400)*/.send("User not found");
-        }
-
-        // If user is found in the database compare the password with bcrypt
-        bcrypt.compare(password, user.password, (error, result) => {
-            if (error) {
-                return response/*.status(400)*/.send({message: "An error occurred"});
-            }
-
-            if (result) {
-                return response/*.status(200)*/.send({message: "User authenticated"}, 
-                  jwtToken,);
-            } else {
-                return response/*.status(400)*/.send({message: "Incorrect username or password"});
-            }
-        });
+  const { username, password } = request.body;
+  const jwtToken = jwt.sign({ïd: username}, JWT_SECRET);
+  const user = await User.findOne({ username }).then((user) => {
+    console.log(user)
+    //If user is not found in the database return 400 status
+    if (!user) {
+      response.send({message:"Username does not exist"});
+    }
+    //If user is found in the database compare the password with bcrypt
+    bcrypt.compare(password, user.password, (error, result) => {
+      if (error) {
+        response.send({message: "An error occured"});
+      }
+      if (result) {
+        response.send({message: "User authenticated", token: jwtToken});
+      } else {
+        response.send({message: "Bad username or password"});
+      }
     });
+  });
 });
+
 
 //create-user 
 server.post("/create-user", async(request, response) =>{ // Apparently we used create-user instead of register

@@ -3,7 +3,7 @@ import { useState } from "react";
 //import { useNavigate } from "react-router-dom";
 import UserForm from "./UserForm";
 import FormComponent from "./FormComponent";
-import Cookies from "js-cookies";
+import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom"; //this is for going back to pages
 export default function LoginPage() {
   // States
@@ -37,7 +37,7 @@ export default function LoginPage() {
         .then((response) => {setPostResponse(response.data.message)
           if(response.data.message === "User authenticated"){
             handleCookie(response.data.token);
-            navigate("/private");
+            navigate("/main");
 
           }
         });

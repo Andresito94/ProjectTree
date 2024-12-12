@@ -144,19 +144,20 @@ server.post("/login", async (request, response) => {
   const { username, password } = request.body;
 
   const user = await User.findOne({ username }).then((user) => {
+    console.log(user)
     //If user is not found in the database return 400 status
     if (!user) {
-      return response.status(400).send("Username doesnot exist");
+      response.send({message:"Username does not exist"});
     }
     //If user is found in the database compare the password with bcrypt
     bcrypt.compare(password, user.password, (error, result) => {
       if (error) {
-        return response.status(400).send("An error occured");
+        response.send({message: "An error occured"});
       }
       if (result) {
-        return response.status(200).send("User authenticated");
+        response.send({message: "User authenticated"});
       } else {
-        return response.status(400).send("Bad username or password");
+        response.send({message: "Bad username or password"});
       }
     });
   });
